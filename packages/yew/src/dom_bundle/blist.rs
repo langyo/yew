@@ -248,6 +248,7 @@ impl BList {
         let rights_to = rev_bundles.len() - matching_len_start;
         let mut spliced_middle =
             rev_bundles.splice(matching_len_end..rights_to, std::iter::empty());
+        #[allow(clippy::mutable_key_type)]
         let mut spare_bundles: HashSet<KeyedEntry> =
             HashSet::with_capacity((matching_len_end..rights_to).len());
         for (idx, r) in (&mut spliced_middle).enumerate() {
@@ -482,7 +483,7 @@ mod feat_hydration {
     }
 }
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(all(target_arch = "wasm32", not(target_os = "wasi")))]
 #[cfg(test)]
 mod layout_tests {
     extern crate self as yew;
@@ -559,7 +560,7 @@ mod layout_tests {
     }
 }
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(all(target_arch = "wasm32", not(target_os = "wasi")))]
 #[cfg(test)]
 mod layout_tests_keys {
     extern crate self as yew;
